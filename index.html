@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <style>
+        .map {
+        height: 900px;
+        width: 100%;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <title>Puntos de reparto de sal en Madrid capital</title>
+</head>
+
+<body>
+    <div id="map" class="map"></div>
+    <script type="text/javascript">
+    var style = new ol.style.Style({
+        fill: new ol.style.Fill({
+            color: 'rgba(255, 100, 50, 0.05)'
+        }),
+        stroke: new ol.style.Stroke({
+            width: 1.5,
+            color: 'rgba(25, 10, 10, 1)'
+        }),
+    });
+
+    function coordsToCircle(c) {
+        return new ol.geom.Circle(
+            ol.proj.transform(c, 'EPSG:4326', 'EPSG:3857'),
+            1300
+        );
+    }
+
+    var coords = [
+        [-3.709590, 40.410650], //Plaza de la Cebada, 13, Madrid, Spain
+        [-3.70311, 40.40449], //Martín de Vargas, 4, Madrid, Spain
+        [-3.67269, 40.39607], //Luis Peidró, 8, Madrid, Spain
+        [-3.68104, 40.42363], //Jorge Juan, 48, Madrid, Spain
+        [-3.6673, 40.4583], //Alfonso XIII, 128
+        [-3.70093, 40.44002], //Santa Engracia, 116, Madrid, Spain
+        [-3.74575, 40.37168], //Reus, 5, Madrid, Spain
+        [-3.72233, 40.38909], //Urogallo, 22, Madrid, Spain
+        [-3.69579, 40.38324], //Antonio López, 197, Madrid, Spain
+        [-3.65778, 40.39386], //Josefa Díaz, 13, Madrid, Spain
+        [-3.65302, 40.40911], //Arroyo Belincoso, 7, Madrid, Spain
+        [-3.65547, 40.4511], //Agastia, 85, Madrid, Spain
+        [-3.64418, 40.47124], //Mar de Kara, 2, Madrid, Spain
+        [-3.69036, 40.34187], //Rocafort, 5, Madrid, Spain
+        [-3.62266, 40.3797], //Manuel Vélez, 7, Madrid, Spain
+        [-3.60681, 40.40122], //Cruz de la Misa, 1, Madrid, Spain
+        [-3.61554, 40.42933], //Avenida de Hellín, 44, Madrid, Spain
+        [-3.58528, 40.47397], //Alhaurín, 7, Madrid, Spain
+        [-3.70161,40.47171], //Paseo de la Dirección 368
+        [-3.7173,40.48213], //Isla de Arosa c/v Cardenal Herrera Oria
+        [-3.73202,40.44207], //Arquitecto López Otero s/n (bajo A-6)
+
+
+    ];
+
+    var circles = [];
+    for (var i = coords.length - 1; i >= 0; i--) {
+        var circle = coordsToCircle(coords[i])
+        var feature = new ol.Feature(circle)
+        circles.unshift(feature)
+    }
+
+    var vectorSource = new ol.source.Vector({
+        projection: 'EPSG:4326',
+        features: circles
+    });
+    var vectorLayer = new ol.layer.Vector({
+        source: vectorSource,
+        style: style
+    });
+
+    var map = new ol.Map({
+        target: 'map',
+        layers: [
+            new ol.layer.Tile({
+                source: new ol.source.OSM(),
+                visible: true,
+            }),
+            vectorLayer
+        ],
+        view: new ol.View({
+            center: ol.proj.fromLonLat([-3.70, 40.41]),
+            zoom: 12
+        })
+    });
+    </script>
+</body>
+
+</html>
