@@ -52,9 +52,9 @@
         [-3.60681, 40.40122], //Cruz de la Misa, 1, Madrid, Spain
         [-3.61554, 40.42933], //Avenida de Hellín, 44, Madrid, Spain
         [-3.58528, 40.47397], //Alhaurín, 7, Madrid, Spain
-        [-3.70161,40.47171], //Paseo de la Dirección 368
-        [-3.7173,40.48213], //Isla de Arosa c/v Cardenal Herrera Oria
-        [-3.73202,40.44207], //Arquitecto López Otero s/n (bajo A-6)
+        [-3.70161, 40.47171], //Paseo de la Dirección 368
+        [-3.7173, 40.48213], //Isla de Arosa c/v Cardenal Herrera Oria
+        [-3.73202, 40.44207], //Arquitecto López Otero s/n (bajo A-6)
 
 
     ];
@@ -79,7 +79,14 @@
         target: 'map',
         layers: [
             new ol.layer.Tile({
-                source: new ol.source.OSM(),
+                source: new ol.source.XYZ({
+                    url: 'https://tile.osmand.net/hd/{z}/{x}/{y}.png',
+                    crossOrigin: null,
+                    tilePixelRatio: 2,
+                    maxZoom: 19,
+                    attributions: ol.source.OSM.ATTRIBUTION,
+                    attributionsCollapsible: false
+                }),
                 visible: true,
             }),
             vectorLayer
